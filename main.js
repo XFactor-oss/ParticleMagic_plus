@@ -64,6 +64,14 @@ function updateShape(type) {
             y = r*Math.sin(v)*Math.sin(u);
             z = r*Math.cos(v);
         }
+        else if(type==='flower'){
+            const t = i * 0.1; // 控制花瓣密度
+            const r = 15 * Math.sin(5 * t); // 5瓣花
+            x = r * Math.cos(t);
+            y = (Math.random() - 0.5) * 2; // 微微抖动，增加立体感
+            z = r * Math.sin(t);
+        }
+
 
         targetPositions[i] = x;
         targetPositions[i+1] = y;
@@ -112,6 +120,27 @@ function init() {
 }
 
 // ---------------- 动画循环 ----------------
+function triggerFirework() {
+    // 随机中心位置
+    const cx = (Math.random() - 0.5) * 40;
+    const cy = (Math.random() - 0.5) * 30 + 10;
+    const cz = (Math.random() - 0.5) * 40;
+
+    // 生成临时烟花粒子
+    for(let i=0;i<PARTICLE_COUNT*0.05;i++){ // 5%粒子用于烟花
+        const idx = Math.floor(Math.random()*PARTICLE_COUNT)*3;
+        const angle1 = Math.random()*Math.PI*2;
+        const angle2 = Math.random()*Math.PI;
+        const radius = Math.random()*5 + 5;
+        targetPositions[idx] = cx + radius * Math.sin(angle2) * Math.cos(angle1);
+        targetPositions[idx+1] = cy + radius * Math.sin(angle2) * Math.sin(angle1);
+        targetPositions[idx+2] = cz + radius * Math.cos(angle2);
+    }
+
+    // 烟花衰减
+    mouseClickFactor = 2.0; // 临时加速扩散
+}
+
 function animate(){
     requestAnimationFrame(animate);
     controls.update();
@@ -151,6 +180,8 @@ hands.onResults(results=>{
         const d = Math.hypot(landmarks[4].x-landmarks[20].x, landmarks[4].y-landmarks[20].y);
         handOpenFactor = Math.max(0,(d-0.15)*settings.sensitivity);
 
+
+
         if(settings.mode==='camera'){
             handPos.x = (landmarks[0].x-0.5)*-100;
             handPos.y = (landmarks[0].y-0.5)*-60;
@@ -182,3 +213,22 @@ function explodeParticles() { settings.explode(); }
 
 // ---------------- 启动 ----------------
 window.onload = init;
+// ---------------- 粒子大小控制 ----------------
+function setSize(val){
+    settings.size = parseFloat(val);
+    if(particles) particles.material.size = settings.size;
+}
+
+// ---------------- UI 展开/收起 ----------------
+document.getElementById('toggle-ui').addEventListener('click', ()=>{
+    const panel = document.getElementById('control-panel');
+    if(panel.classList.contains('expanded')){
+        panel.classList.remove('expanded');
+        panel.classList.add('collapsed');
+        document.getElementById('toggle-ui').innerText = '展开▼';
+    } else {
+        panel.classList.remove('collapsed');
+        panel.classList.add('expanded');
+        document.getElementById('toggle-ui').innerText = '收起▲';
+    }
+});

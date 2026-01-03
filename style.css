@@ -1,77 +1,53 @@
-body { 
-    margin: 0; 
-    overflow: hidden; 
-    background-color: #000; 
-    font-family: 'Segoe UI', sans-serif; 
-}
-
-#container { 
-    position: relative; 
-    width: 100vw; 
-    height: 100vh; 
-}
+/* 容器和背景 */
+body { margin:0; overflow:hidden; background:#000; font-family:'Segoe UI',sans-serif; }
+#container { position:relative; width:100vw; height:100vh; }
 
 /* 状态指示器 */
 #status-display {
-    position: absolute; 
-    bottom: 20px; 
-    left: 20px;
-    color: #00ffcc; 
-    background: rgba(0,0,0,0.8);
-    padding: 12px 20px; 
-    border-radius: 8px;
-    font-family: 'Courier New', monospace; 
-    font-size: 13px;
-    border: 1px solid rgba(0,255,204,0.3); 
-    z-index: 100;
-    pointer-events: none; 
-    line-height: 1.5;
+    position:absolute; bottom:20px; left:20px;
+    color:#00ffcc; background:rgba(0,0,0,0.8);
+    padding:12px 20px; border-radius:10px;
+    font-family:'Courier New', monospace; font-size:13px;
+    border:1px solid rgba(0,255,204,0.3); z-index:100;
+    pointer-events:none; line-height:1.5;
 }
 
-/* 隐藏原始视频 */
-video { 
-    display: none; 
-}
+/* 视频隐藏 */
+video { display:none; }
 
 /* 控制面板 */
 #control-panel {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background: rgba(0,0,0,0.6);
-    padding: 12px 16px;
-    border-radius: 8px;
-    color: #00ffcc;
-    font-family: 'Segoe UI', sans-serif;
-    z-index: 101;
+    position:absolute; top:20px; left:20px;
+    background: rgba(10,10,30,0.85);
+    padding: 12px 16px; border-radius:12px;
+    color:#00ffcc; font-family:'Segoe UI',sans-serif;
+    z-index:101; box-shadow:0 0 15px rgba(0,255,204,0.4);
+    transition: width 0.3s, height 0.3s, padding 0.3s;
 }
 
-#control-panel .panel-section {
-    margin-bottom: 10px;
-}
-
-#control-panel button {
-    margin-right: 6px;
-    margin-top: 4px;
-    padding: 4px 8px;
-    border: 1px solid #00ffcc;
-    border-radius: 4px;
-    background: transparent;
-    color: #00ffcc;
-    cursor: pointer;
-    font-size: 12px;
+#control-panel button, #control-panel input[type="range"] {
+    margin:4px 6px 4px 0;
+    padding:6px 12px; border-radius:6px;
+    border:1px solid #00ffcc; background:transparent;
+    color:#00ffcc; cursor:pointer; font-size:13px;
+    transition: all 0.2s ease;
 }
 
 #control-panel button:hover {
-    background: #00ffcc;
-    color: #000;
+    background:#00ffcc; color:#000; transform:scale(1.05);
 }
 
-#control-panel input[type="color"] {
-    margin-top: 4px;
-    width: 36px;
-    height: 24px;
-    padding: 0;
-    border: none;
-    cursor: pointer;
+#control-panel input[type="color"], #control-panel input[type="range"] {
+    cursor:pointer;
 }
+
+#toggle-ui {
+    margin-bottom:10px;
+    background:#00ffcc; color:#000;
+    font-weight:bold; width:100%;
+}
+
+#control-panel.collapsed { 
+    height:40px; width:80px; overflow:hidden; padding:6px;
+}
+#control-panel.collapsed button:not(#toggle-ui) { display:none; }
