@@ -1,19 +1,48 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ParticleMagic 手势粒子系统</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini 粒子交互系统 - 终极修复版</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
 </head>
 <body>
-  <video id="video" autoplay playsinline></video>
+    <div id="container">
+        <div id="status-display">正在加载系统资源...</div>
+        <video id="input_video"></video>
 
-  <!-- MediaPipe Hands + Camera（非模块，全局变量方式） -->
-  <script src="./vendor/hands.js"></script>
-  <script src="./vendor/camera_utils.js"></script>
+        <!-- 控制面板 -->
+        <div id="control-panel">
+            <div class="panel-section">
+                <label>交互模式:</label>
+                <button onclick="setMode('camera')">摄像头</button>
+                <button onclick="setMode('mouse')">鼠标</button>
+            </div>
 
-  <!-- Three.js + GUI 模块 -->
-  <script type="module" src="main.js"></script>
+            <div class="panel-section">
+                <label>形状:</label>
+                <button onclick="setShape('heart')">爱心</button>
+                <button onclick="setShape('saturn')">土星</button>
+                <button onclick="setShape('buddha')">佛像</button>
+                <button onclick="setShape('spiral')">螺旋</button>
+                <button onclick="setShape('sphere')">球体</button>
+            </div>
+
+            <div class="panel-section">
+                <label>颜色:</label>
+                <input type="color" id="color-picker" value="#00fbff" onchange="setColor(this.value)">
+            </div>
+
+            <div class="panel-section">
+                <button onclick="explodeParticles()">手动爆发</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
 </body>
 </html>

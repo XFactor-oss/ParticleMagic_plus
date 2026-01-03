@@ -1,7 +1,77 @@
-body {
-  margin: 0;
-  overflow: hidden;
-  background: #000;
-  font-family: 'Segoe UI', sans-serif;
+body { 
+    margin: 0; 
+    overflow: hidden; 
+    background-color: #000; 
+    font-family: 'Segoe UI', sans-serif; 
 }
-#video { display:none; }
+
+#container { 
+    position: relative; 
+    width: 100vw; 
+    height: 100vh; 
+}
+
+/* 状态指示器 */
+#status-display {
+    position: absolute; 
+    bottom: 20px; 
+    left: 20px;
+    color: #00ffcc; 
+    background: rgba(0,0,0,0.8);
+    padding: 12px 20px; 
+    border-radius: 8px;
+    font-family: 'Courier New', monospace; 
+    font-size: 13px;
+    border: 1px solid rgba(0,255,204,0.3); 
+    z-index: 100;
+    pointer-events: none; 
+    line-height: 1.5;
+}
+
+/* 隐藏原始视频 */
+video { 
+    display: none; 
+}
+
+/* 控制面板 */
+#control-panel {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0,0,0,0.6);
+    padding: 12px 16px;
+    border-radius: 8px;
+    color: #00ffcc;
+    font-family: 'Segoe UI', sans-serif;
+    z-index: 101;
+}
+
+#control-panel .panel-section {
+    margin-bottom: 10px;
+}
+
+#control-panel button {
+    margin-right: 6px;
+    margin-top: 4px;
+    padding: 4px 8px;
+    border: 1px solid #00ffcc;
+    border-radius: 4px;
+    background: transparent;
+    color: #00ffcc;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+#control-panel button:hover {
+    background: #00ffcc;
+    color: #000;
+}
+
+#control-panel input[type="color"] {
+    margin-top: 4px;
+    width: 36px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+}
