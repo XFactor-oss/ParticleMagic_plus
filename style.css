@@ -1,0 +1,7 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #000;
+  font-family: 'Segoe UI', sans-serif;
+}
+#video { display:none; }
