@@ -19,18 +19,58 @@ const settings = {
 
 // ---------------- 形状生成器 ----------------
 function updateShape(type) {
+    // 定义轮廓粒子的比例 (例如 10% 的粒子用于画边框)
+    const outlineRatio = 0.1; 
+    const outlineCount = PARTICLE_COUNT * 3 * outlineRatio;
+
     for (let i = 0; i < PARTICLE_COUNT * 3; i += 3) {
-        let x=0, y=0, z=0;
+        let x = 0, y = 0, z = 0;
+        
+        // 通用随机参数
         const u = Math.random() * Math.PI * 2;
         const v = Math.random() * Math.PI;
 
-        if(type==='heart'){
-            const t = Math.random() * Math.PI * 2;
-            x = 16 * Math.pow(Math.sin(t),3);
-            y = 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
-            z = (Math.random()-0.5)*6;
+        if (type === 'heart') {
+            // --- 逻辑分支：是做“轮廓”还是做“填充”？ ---
+            
+            if (i < outlineCount) {
+                // 【A组：轮廓粒子】
+                // 为了保证轮廓连续，我们根据索引 i 均匀分布角度 t
+                // 这样可以画出一条连续不断的线，而不是随机的断点
+                const t = (i / outlineCount) * Math.PI * 2;
+
+                // 标准 2D 爱心公式 (Z轴为0)
+                x = 16 * Math.pow(Math.sin(t), 3);
+                y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+                z = 0;
+
+                // 【关键点：加粗轮廓】
+                // 给坐标加一点点微小的随机偏移，让线条看起来有“厚度”
+                // 数值 0.5 控制线条粗细
+                x += (Math.random() - 0.5) * 0.5;
+                y += (Math.random() - 0.5) * 0.5;
+                z += (Math.random() - 0.5) * 0.5;
+
+            } else {
+                // 【B组：实心填充粒子】
+                // 使用优化后的球体填充算法
+                
+                // 1. 体积分布：使用开立方根保证内部均匀，不会全聚在中心
+                const r = Math.cbrt(Math.random());
+                
+                // 2. 形状收缩：根据垂直角度 v 计算收缩系数
+                // 这一点保证了爱心是 3D 的，且边缘圆润
+                const scale = r * Math.sin(v);
+
+                x = 16 * Math.pow(Math.sin(u), 3) * scale;
+                y = (13 * Math.cos(u) - 5 * Math.cos(2*u) - 2 * Math.cos(3*u) - Math.cos(4*u)) * scale;
+                
+                // 3. 深度控制：Z轴厚度设为 6.0，让它看起来像个胖乎乎的抱枕
+                z = 6.0 * Math.cos(v) * r;
+            }
         }
         else if(type==='saturn'){
+            // ... (土星代码保持不变)
             if(i<PARTICLE_COUNT*3*0.4){
                 const r = 10 * Math.cbrt(Math.random());
                 x = r * Math.sin(v)*Math.cos(u);
@@ -47,31 +87,34 @@ function updateShape(type) {
             }
         }
         else if(type==='buddha'){
+            // ... (佛像代码保持不变)
             const r = 15*(0.7+0.3*Math.sin(v*3));
             x = r*Math.sin(v)*Math.cos(u)*0.8;
             y = r*Math.cos(v)*1.2 + 5;
             z = r*Math.sin(v)*Math.sin(u)*0.8;
         }
         else if(type==='spiral'){
+            // ... (螺旋代码保持不变)
             const r = i*0.002;
             x = Math.cos(i*0.1)*r*15;
             y = (Math.random()-0.5)*5;
             z = Math.sin(i*0.1)*r*15;
         }
         else if(type==='sphere'){
+            // ... (球体代码保持不变)
             const r = 20;
             x = r*Math.sin(v)*Math.cos(u);
             y = r*Math.sin(v)*Math.sin(u);
             z = r*Math.cos(v);
         }
         else if(type==='flower'){
-            const t = i * 0.1; // 控制花瓣密度
-            const r = 15 * Math.sin(5 * t); // 5瓣花
+            // ... (花朵代码保持不变)
+            const t = i * 0.1;
+            const r = 15 * Math.sin(5 * t);
             x = r * Math.cos(t);
-            y = (Math.random() - 0.5) * 2; // 微微抖动，增加立体感
+            y = (Math.random() - 0.5) * 2;
             z = r * Math.sin(t);
         }
-
 
         targetPositions[i] = x;
         targetPositions[i+1] = y;
