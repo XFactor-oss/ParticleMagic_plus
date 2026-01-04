@@ -9,7 +9,7 @@ let mouseClickFactor = 0;
 
 const settings = {
     mode: 'camera',
-    shape: 'heart',
+    shape: 'saturn',
     color: '#00fbff',
     size: 0.15,
     rotation: 0.003,
